@@ -1,0 +1,102 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>CzQ</title>
+	<script type="text/javascript" src="libs/jquery.3.6.0.js"></script>
+	<script src="/socket.io/socket.io.js"></script>
+	<script src="app.js"></script>
+</head>
+<body>
+
+	<div id="gameArea">
+
+	</div>
+
+
+ 	<!-- Player Scripts -->
+	<script id="intro-screen" type="text/templeate">
+		<button id="createGame">Create</button>
+		<button id="joinGame">Join</button>
+	</script>
+
+
+	<script id="playerJoinGame" type="text/template">
+		<h1>Please Enter Your Name</h1>
+			<label for="name">Enter your name</label>
+			<input type="text" id="name">
+
+			<label for="roomNum">Room Number:</label>
+			<input type="text" id="roomNum">
+
+			<button id="submit">Submit</button>
+		</form>
+	</script>
+
+	<script id="playerSetsName" type="text/template">
+		<h1>Player Name</h1>
+		<p>Wait for other players</p>
+	</script>
+
+	<script id="playerWaitingScreen" type="text/template">
+		<p id="playerName"> </p>
+		<div id="startInject"></div>
+	</script>
+
+
+
+	<script id="playerAnswer" type="text/template">
+		<p id="question"> </p>
+
+		<input type="text" id="questionAnswer">Enter you answer</input>
+
+		<button id="submitAnswer">Submit</button>
+
+	</script>
+
+
+	<script id="playerVotingScreen" type="text/template">
+		<div id="box1"> </div>
+		<div id="box2"> </div>
+	</script>
+
+	<!-- Host Scripts -->
+
+	<script id="hostJoinGame" type="text/template">
+
+		<p id="roomCode"></p>
+
+		<div id="player">
+			<div id="playerCount">
+
+			</div>
+		</div>
+
+	</script>
+
+
+	<script id="roundStart" type="text/template">
+		<p>Enter answer on your phone</p>
+		<div id="timer"></div>
+	</script>
+
+	<script id="hostDuelScreen" type="text/template">
+		<div id="questionDisplay"></div>
+		<div id="answer1"></div>
+		<div id="answer2"></div>
+	</script>
+
+	<script id="hostDisplayLeaderboards" type="text/template">
+
+	</script>
+
+	<script id="endOfGame" type="text/template">
+		<button id="playAgain">Play Again</button>
+		<button id="quit">quit</button>
+	</script>
+
+
+
+</body>
+</html>
