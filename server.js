@@ -7,6 +7,11 @@ const PORT = process.env.PORT || 3000
 const server = http.createServer(app);
 const { Server } = require("socket.io");
 const io = new Server(server);
+const Stack = require('stack-lifo');
+
+const prompts = ["answer with a q at the beginning", "answer with a bodypart other then your finger", "answer as if your an auctioneer",
+		"ahos latest creation", "answer with sounds that would come from cave", "answer ina a wisconsin accent"];
+
 
 instrument(io, {
 	auth: false
@@ -85,7 +90,7 @@ io.on('connection', socket => {
 	socket.on('playerReqStart', function (data) {
 
 		//emits to all sockets in room
-		io.in(data.roomNum).emit('startGame');
+		io.in(data.roomNum.toString()).emit('startGame');
 
 		console.log("Game started for room: " + data.roomNum);
 	})
@@ -116,13 +121,10 @@ io.on('connection', socket => {
 
 	socket.on('playersVote', function (data) {
 
-		console.log("playersVote data: " + data.playerOneResponse);
 
-		console.log(data.playerTwoResponse)
+		console.log('players start voting emission');
 
-		console.log(data.roomNum);
-
-		socket.to(data.roomNum).emit('playerStartVoting', {pOne: data.playerOneResponse, pTwo: data.playerTwoResponse} );
+		io.to(data.roomNum.toString()).emit('playerStartVoting', data);
 
 		console.log("after io emission");
 
@@ -130,13 +132,13 @@ io.on('connection', socket => {
 
 	socket.on('voteForPlayerOne', function (data) {
 
-		socket.to(data.roomNum).emit('voteForPlayerOne');
+		socket.to(data.roomNum.toString()).emit('voteForPlayerOne');
 
 	})
 
 	socket.on('voteForPlayerTwo', function (data) {
 
-		socket.to(data.roomNum).emit('voteForPlayerTwo');
+		socket.to(data.roomNum.toString()).emit('voteForPlayerTwo');
 
 	})
 
@@ -145,47 +147,25 @@ io.on('connection', socket => {
 		io.to(data.sock).emit('displayResults');
 
 	})
+
+	socket.on('duelDisplayed', function (data) {
+
+		console.log("duelDisplayed");
+
+		io.to(data.roomNum.toString()).emit('nextDuel')
+	})
 	socket.on('roundTwo', function (data) {
 
-		let player1array = io.of('/').adapter.rooms.get(data.roomNumber);
+		console.log("succesfully emmited 'roundTwo'")
 
-		let player2array = io.of('/').adapter.rooms.get(data.roomNumber);
-
-		let playerArray = [];
-
-		while (player1array.size > 0) {
-
-			playerArray = pickRand(player1array, player2array);
-
-			//socket.to(playerArray[0]).to(playerArray[1]).emit('prompt', {prompt: })
-
-			console.log(playerArray);
-		}
+		io.to(data.roomNum.toString()).emit("playerNeedsPrompt", data)
 	})
 
+	socket.on('playerPromptIs', function (data) {
 
-	function pickRand(array1, array2) {
+		socket.to(data.sock.toString()).emit('yourPrompt', {prompt: data.prompt})
 
-		let selectionOne = (Math.random() * 100) % array1.size;
+	})
 
-		let player1 = array1.splice(selectionOne, 1);
-
-		let selectionTwo = (Math.random() * 100) % array2.size;
-
-		while (player1 === array2[selectionTwo]) {
-			selectionTwo = (Math.random() * 100) % array2.size;
-		}
-
-		let player2 = array2.splice(selectionTwo, 1);
-
-		let playerArray = [];
-
-		playerArray.push(player1);
-
-		playerArray.push(player2);
-
-		return playerArray;
-
-	}
 
 });

@@ -15,8 +15,11 @@
     "express": "^4.17.1",
     "jquery": "^3.6.0",
     "jsdom": "^16.6.0",
+    "mocha": "^9.1.0",
+    "require": "^0.4.4",
     "socket.io": "^4.1.2",
-    "socket.io-client": "^4.1.2"
+    "socket.io-client": "^4.1.2",
+    "stack-lifo": "^0.1.6"
   },
   "devDependencies": {
     "nodemon": "^2.0.7"
